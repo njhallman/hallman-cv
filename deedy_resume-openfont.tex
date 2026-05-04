@@ -1,0 +1,474 @@
+\documentclass[]{deedy-resume-openfont}
+
+
+
+\usepackage{comment} % Allow for commenting out blocks of code
+\usepackage{makecell}
+\usepackage[hang,flushmargin]{footmisc} % Format footnotes
+\usepackage{longtable} % Allow "longtable" format, which lets long tables span multiple pages automatically
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{rotating}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage[capposition=top]{floatrow} % Helps center tables somehow
+\usepackage{pdflscape} % Allow some pages to be landscape
+\usepackage{setspace} % Allow for double spacing 
+\usepackage[justification=centering,large]{caption}
+\usepackage{charter} % font
+\usepackage{needspace}
+\usepackage{indentfirst}\setlength\parindent{1cm} %indent first paragraph of sections
+\usepackage{hyperref}
+\usepackage{soul}
+\usepackage{etoolbox}
+
+% Prevent orphaned headings (keep titles with at least a couple lines of content)
+\pretocmd{\section}{\needspace{10\baselineskip}}{}{}
+\pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
+\ifdef{\runsubsection}{\pretocmd{\runsubsection}{\needspace{4\baselineskip}}{}{}{}}{}
+
+\renewcommand{\arraystretch}{1.3}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{lastpage}
+\usepackage[english]{babel}
+\usepackage{inputenc}
+
+%\setlist[enumerate]{noitemsep}
+\setlist[enumerate,1]{leftmargin=*}
+
+
+
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+ 
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     LAST UPDATED DATE
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lastupdated
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     TITLE NAME
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\namesection{NICHOLAS J.}{HALLMAN}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     EMPLOYMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Employment}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+\begin{minipage}[t]{0.5\textwidth} 
+
+\subsection{The University of Texas Austin}
+\location{2023 - Present | Associate Professor (tenured)}
+\location{2016 - 2023 | Assistant Professor}
+\sectionsep
+
+\subsection{Salem Center for Policy}
+\location{2023 - Present | Senior Scholar for AI Initiatives}
+\sectionsep
+
+\subsection{Paideum Education} 
+\location{2025 - Present | Founder | \href{https://paideum.com}{\textit{\ul{Paideum.com}}}}
+
+\sectionsep
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+
+\subsection{CAS Center for Auditing}
+\location{2026 - Present \hspace{.08cm}| Head of Data and AI Initiatives}
+\sectionsep
+
+\subsection{Deloitte}
+\location{2011 – 2012 \hspace{.08cm}| Senior Auditor}
+\location{2009 – 2011 | Staff Auditor}
+
+\end{minipage} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     EDUCATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Education \& Certification}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+\begin{minipage}[t]{0.5\textwidth} 
+
+\subsection{University of Missouri Columbia}
+\descript{PhD in Accountancy}
+\location{May 2016}
+
+\sectionsep
+
+\subsection{Certified Public Accountant}
+\descript{North Carolina (Inactive)}
+
+\sectionsep
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+
+\subsection{Appalachian State University }
+\descript{BS and MS in Accountancy}
+\location{August 2009}
+\end{minipage} 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     RESEARCH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+\section{Research}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.1pt}
+
+\vspace*{.15cm}
+\subsection{Peer Reviewed Publications} 
+\vspace*{-.4cm}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.5cm}p{16.9cm}}
+\endfirsthead
+\multicolumn{2}{l}{\textit{(Peer reviewed publications continued from previous page)}}
+\endhead
+\multicolumn{2}{r}{\textit{(Peer reviewed publications continued on next page)}}
+\endfoot
+\endlastfoot
+    1. & Analyst coverage and syndicated lending. With John Howe and Wei Wang. \href{https://doi.org/10.1007/s11142-022-09670-8}{\textit{\ul{Review of Accounting Studies}}}, 2023. \\
+    2. & Audit implications of non-GAAP reporting. With Anne Thompson and Jaime Schmidt. \href{https://doi.org/10.1111/1475-679X.12433}{\textit{\ul{Journal of Accounting Research}}}, 2022. \\
+    3. & How do auditors respond to competition? Evidence from the bidding process. With Antonis Kartapanis and Jaime Schmidt. \href{https://doi.org/10.1016/j.jacceco.2021.101475}{\textit{\ul{Journal of Accounting and Economics}}}, 2022. \\
+    4. & Does distance matter? An investigation of partners who audit distant clients and the effects on audit quality. With Jere Francis and Nargess Golshan. \href{https://doi.org/10.1111/1911-3846.12744}{\textit{\ul{Contemporary Accounting Research}}}, 2022. \\
+    5. & A matter of appearances: How does auditing expertise benefit audit committees when selecting auditors? With Matthew Baugh and Steven Kachelmeier. \href{https://doi.org/10.1111/1911-3846.12736}{\textit{\ul{Contemporary Accounting Research}}}, 2022. Zach Kowaleski's favorite accounting paper (last confirmed in 2024). \\
+    6. & On the relation between insider trading and going concern opinions. With Andrew Imdieke, Kyonghee Kim, and Raynolde Pereira. \href{https://doi.org/10.2308/ajpt-52592}{\textit{\ul{AUDITING: A Journal of Practice and Theory}}}, 2020. \\
+    7. & The geographic decentralization of audit firms and audit quality. With Matthew Beck and Joshua Gunn. \href{https://doi.org/10.1016/j.jacceco.2019.101234}{\textit{\ul{Journal of Accounting and Economics}}}, 2019. \\
+    8. & Awareness of SEC enforcement and auditor reporting decisions. With Mark DeFond and Jere Francis. \href{https://doi.org/10.1111/1911-3846.12352}{\textit{\ul{Contemporary Accounting Research}}}, 2018. \\
+    9. & State pension liabilities and credit assessments. With Inder Khurana. \href{https://doi.org/10.2308/acch-51213}{\textit{\ul{Accounting Horizons}}}, 2015. \\
+\end{longtable}
+
+
+\vspace*{-.25cm}
+\subsection{Working Papers} 
+\vspace*{-.4cm}
+%\begin{longtable}{l}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.5cm}p{16.9cm}}
+
+\endfirsthead
+
+\multicolumn{2}{l}{\textit{Current projects continued from previous page}}
+\endhead
+
+\multicolumn{2}{r}{\textit{Current projects continued on next page}}
+\endfoot
+
+\endlastfoot
+
+    1. & Are audit fees discounted by successor auditors? With Jaime J. Schmidt. \href{https://dx.doi.org/10.2139/ssrn.4085798}{\underline{SSRN}}. \\
+
+    2. & Gender Disparities in Auditing. With Jade Chen and Jayanthi Sunder. \href{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4678211}{\underline{SSRN}}. \\
+
+    3. & Audited non-GAAP earnings. With Anne Thompson and Jaime Schmidt. Copy available upon request. \\
+
+    4. & International PCAOB Inspections and the Decline in Foreign Listings to the U.S. With Shuping Chen and Albert Wang. \href{http://dx.doi.org/10.2139/ssrn.5700522}{\underline{SSRN}}. \\
+    
+
+\end{longtable}
+
+\needspace{6\baselineskip}
+\vspace*{-.25cm}
+\subsection{Other Work}
+\vspace*{-.4cm}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.5cm}p{16.9cm}}
+
+\endfirsthead
+
+\multicolumn{2}{l}{\textit{Other work continued from previous page}}
+\endhead
+
+\multicolumn{2}{r}{\textit{Other work continued on next page}}
+\endfoot
+
+\endlastfoot
+
+    1. & What the Best AI Users Do Differently? With Zach Kowaleski, Anu Puvvada, and Jaime Schmidt (\href{https://hbr.org/2026/03/what-the-best-ai-users-do-differently-and-how-to-level-up-all-of-your-employees}{\underline{HBR}, 2026}) \\
+
+    2. & What Would Friedman Say? Introducing Friedman.ai (\href{https://whatwouldfriedmansay.substack.com/p/introducing-friedmanai}{\underline{Substack}, 2024}) \\
+    
+    
+    
+
+\end{longtable}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     INVITED PRESENTATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\needspace{5\baselineskip}
+\section{Invited Presentations}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+
+\begin{minipage}[t]{0.5\textwidth} 
+
+\subsection{Conferences}
+AAA Audit PhD Consortium (2026) \\
+Bretton Woods Accounting and Finance Conference (2025) \\
+Swiss Accounting Research Alpine Camp (2025) \\
+AAA/Deloitte Foundation/J. Michael Cook \\
+\hspace*{.4cm} Doctoral Consortium (2024) \\ 
+Business and Accounting Retreat (2024) \\ 
+Illinois Symposium on Audit Research (2018, 2024) \\
+ISAR (2015, 2017, 2018, 2019, 2024 - AI Panel) \\
+Audit \& Assurance Conference in Edinburgh (2023) \\
+Texas Lone Star Conference (2022) \\
+Contemporary Accounting Research Conference (2020) \\
+PCAOB/TAR Auditing and Capital Markets (2019) \\
+KU Audit Symposium (2016, 2018) \\
+AAA – Audit Midyear Meeting (2015, 2016, 2018) \\
+AAA – Annual Meeting (2013, 2014, 2015, 2017, 2018) \\
+AAA – FARS Midyear Meeting (2014) 
+
+
+
+\sectionsep
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+
+\subsection{Workshops}
+University of Kentucky (2026, scheduled) \\
+University of Arizona (2026) \\
+Michigan State University (2025) \\
+University of Texas at San Antonio (2025) \\
+Arizona State University (2024) \\ 
+University of Pittsburgh (2024) \\
+University of Oklahoma (2023) \\
+Penn State University (2023) \\
+Temple University (2022) \\
+University of Colorado Boulder (2019) \\
+University of Illinois Champaign Urbana (2019, 2016) \\
+Texas A\&M University (2016) \\
+Northeastern University (2016) \\
+Tulane University (2016) \\
+University of Illinois Chicago (2015) \\
+University of Arkansas (2015) \\
+
+\end{minipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Service
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Service}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+\begin{minipage}[t]{0.5\textwidth}
+
+\subsection{Associate Editor Positions}
+Accounting Open (2025 - Present)
+\sectionsep
+
+\subsection{Editorial Boards}
+Review of Accounting Studies (2026 - Present) \\
+Contemporary Accounting Research (2023 - Present) \\
+The Accounting Review (2021 - Present) \\
+Auditing: A Journal of Practice \& Theory (2017 - 2026)
+\sectionsep
+
+\subsection{Ad Hoc Journal Referee}
+Management Science \\
+Journal of Accounting Research \\
+Journal of Accounting and Economics \\
+Accounting, Organizations, and Society \\
+European Accounting Review \\
+Accounting Horizons \\
+Journal of Accounting, Auditing, and Finance \\
+International Journal of Auditing \\
+Applied Economics
+\sectionsep
+
+\subsection{Dissertation Committees}
+Dorothy Dickmann, Chair (2025) \\
+Minjae Kim (2024) \\
+Ryan Ballestero (2021) 
+\sectionsep
+
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+
+
+
+
+\subsection{Other Committees at McCombs}
+Accounting Department Faculty Recruiting Committee \\
+\hspace*{.4cm} Chair (2025) \\
+Accounting Curriculum Review and Revision Committee \\ 
+\hspace*{.4cm} Co-chair (2022-2023)\\
+Accounting PhD Evaluation and Continuation Committee \\ 
+\hspace*{.4cm} (2022-2023)\\
+Executive Committee for the C. Aubrey Smith Center 
+for \\ 
+\hspace*{.4cm} Auditing Education \& Research (2023 - Present) \\
+Accounting Department Strategic Plan Task Force (2025) 
+\sectionsep
+
+\subsection{Other Service}
+Austin Fencers Club Board Member (2026-Present) \\
+Auditing Track Chair of Hawaiian Accounting Research \\ \hspace*{.4cm} Conference (2025, 2026, 2027) \\ 
+Faculty Mentor, AAA/Deloitte/J. Michael Cook Doctoral \\ \hspace*{.4cm} Consortium (2024) \\
+Faculty Mentor, Auditing Doctoral Consortium \\ \hspace*{.4cm}(2021, 2026) \\
+Scientific Committee European Accounting Association \\ 
+\hspace*{.4cm} Congress (2020 and 2021) \\
+McCombs peer teaching observer (Spring 2023, Fall 2023,  \\ 
+\hspace*{.4cm} Spring 2024, Fall 2024, Spring 2025, Spring 2026)
+
+
+
+\sectionsep
+
+\end{minipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     TEACHING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Teaching}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+\begin{minipage}[t]{0.5\textwidth} 
+
+\runsubsection{Coding and Data Analytics for Accountants} \location{}
+University of Texas Austin:\\
+\hspace*{.4cm} Fall 2025 (Overall Instructor Rating: 4.5/5.0) \\
+\hspace*{.4cm} Fall 2024 (Overall Instructor Rating: 4.7/5.0) \\
+\hspace*{.4cm} Fall 2023 (Overall Instructor Rating: 4.9/5.0) \\
+\hspace*{.4cm} Fall 2022 (Overall Instructor Rating: 4.6/5.0) \\
+\sectionsep
+
+\runsubsection{Introduction to Financial Accounting} \location{}
+University of Missouri Columbia:\\
+\hspace*{.4cm} Summer 2015 (Overall Instructor Rating: 4.4/5.0) \\
+\hspace*{.4cm} Summer 2014 (Overall Instructor Rating: 4.5/5.0) \\
+\sectionsep
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+
+\runsubsection{Auditing and Assurance Services} \location{}
+University of Texas Austin:\\
+\hspace*{.4cm} Spring 2021 (Overall Instructor Rating: 4.8/5.0) \\
+\hspace*{.4cm} Spring 2020 (Overall Instructor Rating: 4.8/5.0) \\
+\hspace*{.4cm} Spring 2019 (Overall Instructor Rating: 4.5/5.0) \\
+\hspace*{.4cm} Spring 2018 (Overall Instructor Rating: 4.6/5.0) \\
+\hspace*{.4cm} Spring 2017 (Overall Instructor Rating: 4.5/5.0) \\
+University of Missouri Columbia:\\
+\hspace*{.4cm} Spring 2015 (Overall Instructor Rating: 4.5/5.0) \\
+\sectionsep
+
+
+\end{minipage} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Awards and Recognition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Awards and recognition}
+\vspace*{-.25cm}
+\rule{\textwidth}{0.3pt}
+
+\begin{minipage}[t]{0.5\textwidth} 
+\subsection{Awards}
+Google Gemini Academic Research in AI Grant (2026) \\
+CBA Foundation Advisory Council Award for Teaching \\ 
+\hspace*{.4cm} Innovation - Winner (2025-2026) \\
+CBA Foundation Advisory Council Award for Teaching \\ 
+\hspace*{.4cm} Innovation - Nominated (2024-2025) \\
+McCombs Research Excellence Grants (2023-2024) \\
+Trammel/CBA Foundation Teaching Award For Assistant \\
+\hspace*{.4cm} Professors - Winner (2022 - 2023) \\
+CBA Foundation Research Excellence Award for Assistant \\
+\hspace*{.4cm} Professors - Winner (2022 - 2023) \\
+Trammel/CBA Foundation Teaching Award For Assistant \\
+\hspace*{.4cm} Professors - Nominated (2021 - 2022) \\
+CBA Foundation Research Excellence Award for Assistant \\
+\hspace*{.4cm} Professors - Nominated (2021 - 2022) \\
+McCombs Faculty Honor Role (2020)
+
+
+
+\sectionsep
+
+\end{minipage} 
+\hfill
+\begin{minipage}[t]{0.49\textwidth} 
+\subsection{Media Mentions}
+
+Why We Don’t Have More AI Power Users In The \\ \hspace*{.4cm} Age Of AI (\href{https://www.forbes.com/sites/joemckendrick/2026/03/22/why-we-dont-have-more-ai-power-users-in-the-age-of-ai/}{\underline{Forbes}, 2026}) \\
+New study shows who is getting the most out of using \\ \hspace*{.4cm} AI for business (\href{https://www.tpr.org/news/2026-03-20/new-study-shows-who-is-getting-the-most-out-of-using-ai-for-business}{\underline{Texas Public Radio}, 2026}) \\
+Behind the Data on AI at Work (\href{https://a7b1cb29-8eb2-4801-9ccb-e0eb899497ab.libsyn.com/behind-the-data-on-ai-at-work-with-dr-nick-hallman}{\underline{ATC Podcast}, 2026}) \\
+How to Make AI Work for You (\href{https://whchronicle.com/episodes/how-to-make-ai-work-for-you/}{\underline{WH Chronicle}, 2026}) \\
+Colleges Inject AI Into Accounting Programs to \\ \hspace*{.4cm} Increase Appeal (\href{https://news.bloombergtax.com/financial-accounting/colleges-inject-ai-into-accounting-programs-to-increase-appeal}{\underline{Bloomberg}, 2025}) \\
+Salem Center launches new A.I. to recreate famous  \\ \hspace*{.4cm} economist Friedman’s perspective (\href{https://thedailytexan.com/2024/04/03/salem-center-launches-new-a-i-to-recreate-famous-economist-friedmans-perspective/}{\underline{Daily Texan}, 2024})
+The Milton Friedman app isn't bad. Reading Friedman is \\ \hspace*{.4cm}much better (\href{https://financialpost.com/opinion/milton-friedman-app-isnt-bad-reading-friedman-much-better}{\underline{Financial Post}}, 2024) \\
+SEC Chief Accountant Stresses Audit Committee Oversight  \\
+\hspace*{.4cm} of ‘Other Auditors’ (\href{https://t.e2ma.net/click/qo491h/ejc7cb2/m9dsdw}{\underline{Financial Times - Agenda}}, 2023) \\
+Proposed FASB Standard Would Reveal New Income \\
+\hspace*{.4cm} Statement Details (\href{https://t.e2ma.net/click/qo491h/ejc7cb2/21esdw}{\underline{Financial Times - Agenda}}, 2023) \\
+ChatGPT vs. CPA (\href{https://www.youtube.com/watch?v=PMAYckefB_w&t=1488s&pp=ygUMTmljayBIYWxsbWFu}{\underline{The Wealthability Podcast}}, 2023) \\
+Auditing Committees Hire Handsome Partners \\ 
+\hspace*{.4cm} (\href{https://medium.com/texas-mccombs/auditing-committees-hire-handsome-partners-29d99a33bf}{\underline{Medium}, 2022})
+
+
+\end{minipage}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}  \documentclass[]{article}
+
