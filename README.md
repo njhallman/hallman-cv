@@ -1,11 +1,11 @@
 # Nicholas J. Hallman — CV
 
-[**View CV (PDF)**](deedy_resume-openfont.pdf)
+[**View CV (PDF)**](hallman_cv.pdf)
 
-Source: [`deedy_resume-openfont.tex`](deedy_resume-openfont.tex)
+Source: [`hallman_cv.tex`](hallman_cv.tex)
 
 Compile with:
 
 ```bash
-xelatex deedy_resume-openfont.tex
+xelatex hallman_cv.tex
 ```
