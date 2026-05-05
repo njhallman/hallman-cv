@@ -4,7 +4,7 @@ Associate Professor of Accounting at The University of Texas at Austin (McCombs 
 
 ## Curriculum Vitae
 
-[**View CV (PDF)**](hallman_cv.pdf)
+[**View CV (PDF)**](hallman-cv.pdf)
 
 Includes employment, education, peer-reviewed publications, working papers, invited presentations, editorial and service roles, teaching evaluations, and awards.
 
@@ -13,7 +13,7 @@ Includes employment, education, peer-reviewed publications, working papers, invi
 This CV uses a modified version of the [Deedy Resume](https://github.com/deedy/Deedy-Resume) template (open-font edition). Compile with XeLaTeX:
 
 ```bash
-xelatex hallman_cv.tex
+xelatex hallman-cv.tex
 ```
 
 Required fonts are bundled in [`fonts/`](fonts/).
