@@ -3,56 +3,878 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#bcd6ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a1030" media="(prefers-color-scheme: dark)">
 <title>Nicholas J. Hallman — CV</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    color: #2b2b2b;
-    line-height: 1.5;
-    background: #fafafa;
+/* ══════════════════════════════════════════════════════════════════
+   Tokens
+   ══════════════════════════════════════════════════════════════════ */
+:root{
+  color-scheme: light dark;
+
+  /* ink */
+  --ink:      #1d1d1f;
+  --ink-2:    #424245;
+  --ink-3:    #515154;   /* footer: clears AA on the paper shadow, not just on #f5f5f7 */
+  --sep:      #414952;   /* middle dot, dark enough to clear AA over the sky */
+
+  /* surfaces */
+  --band:     #f5f5f7;
+  --paper:    #ffffff;
+  --hair:     #d2d2d7;
+  --hair-q:   rgba(0,0,0,.09);
+
+  /* action colour: pill blue vs. link blue derived for its own backdrop */
+  --blue:     #0071e3;
+  --blue-hi:  #0077ed;
+  --link:     #0053ac;   /* derived for the sky it sits on, not for white:
+                            #06c measures 4.4:1 over the hero at 390px. */
+  --link-hi:  #003b7d;   /* hover deepens; lightening would drop below AA */
+  --focus:    #0071e3;
+
+  /* the frosted material: thin enough that the sky tints it — vibrancy,
+     not an opaque header — with a soft continuation below the hairline so
+     the material fades out instead of stepping */
+  --bar:      rgba(255,255,255,.52);
+  --barfade:  255,255,255;
+  --barfade-o: .42;
+
+  --paper-shadow:
+      0 0 0 .5px rgba(24,48,80,.13),
+      0 1px 2px  rgba(20,40,70,.05),
+      0 34px 74px -30px rgba(14,34,64,.32);
+
+  /* ── the valley, clear morning ─────────────────────────────────
+     value ladder, horizon → foreground:
+     sky .77 · far crest .64 · dome .50 · mid ridge .40 · near ridge .26
+     · shoulder .13 — the most distant mass carries the least contrast. */
+  --sky-1:  #93bde4;
+  --sky-2:  #bdd7ee;
+  --sky-3:  #dbe8f2;
+  --sky-4:  #eaeff2;
+  --warm:   #ffe4b8;  --warm-o: .66;
+  --sun:    #ffd9a2;  --sun-o:  .80;
+
+  --r1a:#c5d3e2; --r1b:#d6d5c9; --r1c:#bccde0; --r1d:#b4c7db;
+  --r2a:#8fa6bd; --r2b:#b0a898; --r2c:#7e94ad; --r2d:#778da7;
+  --d1:#9aadc2; --d2:#a4b3c4; --d3:#b4b8b2; --d4:#bebdaf;
+  --air-mid: .06; --air-end: .24;
+  --r3a:#6f849c; --r3b:#948c81; --r3c:#64798f; --r3d:#5d7288;
+  --n1:#52657e; --n2:#34425a;
+
+  --shade: 56,80,110;
+  --rim:   #fff1da;  --rim-o: .34;
+  --haze:  #f1f4f5;
+  --floor: #f5f5f7;
+  --star-o: 0;
+  --cirrus-o: .8;
+  --grain-o: .26;
+  --grain-mode: overlay;
+
+  --gx: clamp(22px, 6.6vw, 132px);
+  --spine: 1040px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:      #f5f5f7;
+    --ink-2:    #ccd0d8;
+    --ink-3:    #99a0ad;
+    --sep:      #98a2b3;
+
+    --band:     #15171e;
+    --paper:    #ffffff;
+    --hair:     #32343d;
+    --hair-q:   rgba(255,255,255,.10);
+
+    --blue:     #0071e3;
+    --blue-hi:  #0d80ea;
+    --link:     #7cb9ff;
+    --link-hi:  #a9d2ff;
+    --focus:    #7cb9ff;
+
+    --bar:      rgba(10,13,26,.80);
+    --barfade:  10,13,26;
+    --barfade-o: .5;
+
+    --paper-shadow:
+        0 0 0 .5px rgba(255,255,255,.10),
+        0 1px 2px  rgba(0,0,0,.4),
+        0 40px 90px -34px rgba(0,0,0,.85);
+
+    /* dusk: cool indigo sky, warm ember low on the horizon. No magenta. */
+    --sky-1:  #04061a;
+    --sky-2:  #0a1130;
+    --sky-3:  #17204a;
+    --sky-4:  #2b3357;
+    --warm:   #6b5540;  --warm-o: .34;
+    --sun:    #8a7050;  --sun-o:  .32;
+
+    --r1a:#2b3457; --r1b:#333b5d; --r1c:#26304f; --r1d:#212a48;
+    --r2a:#181f42; --r2b:#1d2346; --r2c:#141a39; --r2d:#111632;
+    --d1:#131a37; --d2:#19203f; --d3:#1f2749; --d4:#252d54;
+    --air-mid: .08; --air-end: .22;
+    --r3a:#0d1330; --r3b:#111635; --r3c:#0a0f28; --r3d:#080c22;
+    --n1:#05070f; --n2:#020308;
+
+    --shade: 0,0,6;
+    --rim:   #dcae7c;  --rim-o: .22;
+    --haze:  #232c58;
+    --floor: #15171e;
+    --star-o: .9;
+    --cirrus-o: .14;
+    --grain-o: .44;
+    --grain-mode: overlay;
   }
-  header { border-bottom: 1px solid #e0e0e0; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-  h1 { margin: 0 0 0.25rem; font-weight: 300; font-size: 2.25rem; letter-spacing: 0.02em; }
-  .subtitle { color: #666; font-size: 1rem; }
-  .actions { margin: 1.25rem 0; }
-  .actions a {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem 0.5rem 0;
-    background: #2b2b2b;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Base
+   ══════════════════════════════════════════════════════════════════ */
+*{ box-sizing: border-box; }
+
+html{
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 48px;   /* exactly the bar, nothing stacked on top */
+  background: var(--band);
+}
+
+body{
+  margin: 0;
+  background: var(--band);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -.01em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+a{ color: var(--link); text-decoration: none; }
+a:hover{ color: var(--link-hi); text-decoration: underline; text-underline-offset: 3px; }
+
+:focus-visible{
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* one spine for the whole page: the type column, the sheet and the footer
+   rule all sit on it, and the hero's focal mass is composed over it */
+.hold{ width: 100%; max-width: var(--spine); margin-inline: auto; }
+
+/* the pill is its own surface in both schemes — it must not inherit the
+   sky-derived link colour, which is pale blue in the dark */
+.skip{
+  position: absolute; left: 50%; top: 8px; z-index: 90;
+  transform: translate(-50%, -180%);
+  background: #fff; color: #0053ac;
+  border: 1px solid #d2d2d7; border-radius: 980px;
+  padding: 9px 20px; font-size: 14px; letter-spacing: -.01em;
+}
+.skip:focus{ transform: translate(-50%, 0); text-decoration: none; }
+.skip:focus-visible{ outline-color: #0071e3; }
+
+/* ══════════════════════════════════════════════════════════════════
+   Frosted bar — it sits over the sky, so the vibrancy is real
+   ══════════════════════════════════════════════════════════════════ */
+.bar{
+  position: sticky; top: 0; z-index: 40;
+  background: var(--bar);
+  border-bottom: 1px solid var(--hair-q);
+}
+/* the material does not stop at a knife edge: it fades out over 22px so the
+   step across the hairline stays under the threshold where the eye reads
+   "opaque header" instead of "translucent glass" */
+.bar::after{
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 22px;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      rgba(var(--barfade), var(--barfade-o)),
+      rgba(var(--barfade), calc(var(--barfade-o) * .45)) 40%,
+      rgba(var(--barfade), 0));
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
+  .bar{
+    background: var(--bar);
+    /* 28px, wider than the bar is tall, so a hard vertical edge in the scene
+       cannot split the material into two visibly different halves */
+    -webkit-backdrop-filter: saturate(180%) blur(28px);
+    backdrop-filter: saturate(180%) blur(28px);
   }
-  .actions a:hover { background: #555; }
-  .actions a.secondary { background: white; color: #2b2b2b; border: 1px solid #ccc; }
-  .actions a.secondary:hover { background: #f0f0f0; }
-  .pdf-frame {
-    width: 100%;
-    height: 90vh;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
+}
+.bar-in{
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  height: 48px; padding: 0 var(--gx);
+  max-width: calc(var(--spine) + 2 * var(--gx));
+}
+.mark{
+  font-size: 14px; font-weight: 500; letter-spacing: -.012em;
+  color: var(--ink); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.bar nav{ display: flex; gap: clamp(20px, 2.4vw, 32px); flex: 0 0 auto; }
+.bar nav a{
+  font-size: 14px; letter-spacing: -.004em; color: var(--ink); opacity: .78;
+}
+.bar nav a:hover{ opacity: 1; color: var(--ink); text-decoration: none; }
+/* in the dark the bar composites to a mid grey over the white sheet, and the
+   opacity trick would drop the links to 4.39:1 — set the resting ink instead */
+@media (prefers-color-scheme: dark){
+  .bar nav a{ opacity: 1; color: var(--ink-2); }
+  .bar nav a:hover{ color: var(--ink); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Hero — the valley is the page, not a picture on the page
+   ══════════════════════════════════════════════════════════════════ */
+.hero{
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(780px, 34vw + 250px, 940px);
+  display: flex; flex-direction: column; justify-content: flex-start;
+  padding: clamp(52px, 9vh, 112px) var(--gx) clamp(36px, 5vh, 64px);
+  background: var(--sky-3);
+  margin-top: -48px;          /* the sky runs up behind the sticky bar */
+  padding-top: calc(48px + clamp(52px, 9vh, 112px));
+}
+.scene{
+  position: absolute; inset: 0; z-index: -1;
+  width: 100%; height: 100%; display: block; pointer-events: none;
+}
+.scene-p{ display: none; }
+
+/* film grain lives in CSS px, not in the scene's viewBox, so its cell size is
+   the same at 390px and at 1920px — grain that resizes with the window is
+   not grain */
+.grain{
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  opacity: var(--grain-o);
+  mix-blend-mode: var(--grain-mode);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.75' intercept='-.375'/%3E%3CfeFuncG type='linear' slope='1.75' intercept='-.375'/%3E%3CfeFuncB type='linear' slope='1.75' intercept='-.375'/%3E%3CfeFuncA type='table' tableValues='1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+}
+
+h1{
+  margin: 0;
+  font-size: clamp(2.625rem, 5.2vw, 76px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -.018em;    /* relaxed at small sizes … */
+  color: var(--ink);
+}
+@media (min-width: 561px){  h1{ letter-spacing: -.024em; } }
+@media (min-width: 760px){  h1{ letter-spacing: -.030em; white-space: nowrap; } }
+@media (min-width: 1100px){ h1{ letter-spacing: -.036em; } }
+@media (min-width: 1500px){ h1{ letter-spacing: -.040em; } }  /* … tightened as it grows */
+
+.affil{
+  margin: clamp(18px, 2.4vh, 26px) 0 0;
+  max-width: 46em;
+  font-size: clamp(1.1875rem, 1.45vw, 22px);
+  font-weight: 400;
+  line-height: 1.34;
+  letter-spacing: -.014em;
+  color: var(--ink-2);
+}
+/* each half is a unit, so the rag can only break at the middle dot,
+   and the dot is bound to the word before it */
+.affil span{ display: inline-block; }
+.affil .sep{ display: inline; color: var(--sep); }
+
+/* the pill sits alone; the two text links share the line beneath it, so the
+   whole action block stays a narrow column and leaves the valley open */
+.acts{
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: clamp(18px, 2.6vh, 24px);
+  margin-top: clamp(28px, 4.2vh, 46px);
+}
+.quiet{ display: flex; flex-wrap: wrap; gap: 8px clamp(22px, 2.2vw, 30px); }
+.pill{
+  display: inline-flex; align-items: center;
+  background: var(--blue); color: #fff;
+  border-radius: 980px;
+  padding: 12px 23px 13px;
+  font-size: 17px; font-weight: 400; letter-spacing: -.012em; line-height: 1.2;
+}
+.pill:hover{ background: var(--blue-hi); color: #fff; text-decoration: none; }
+.chev{
+  display: inline-flex; align-items: baseline; gap: .42em;
+  font-size: 17px; letter-spacing: -.012em;
+}
+.chev:hover{ text-decoration: none; }
+.chev .u{ border-bottom: 1px solid transparent; }
+.chev:hover .u{ border-bottom-color: currentColor; }
+.chev svg{ width: 7px; height: 11px; flex: none; align-self: center; }
+
+/* ══════════════════════════════════════════════════════════════════
+   The CV — a sheet of letter paper lying on the desk
+   ══════════════════════════════════════════════════════════════════ */
+.cv{
+  background: var(--band);
+  padding: clamp(48px, 8vh, 96px) var(--gx) clamp(30px, 4vh, 44px);
+}
+.cv h2{
+  margin: 0 0 clamp(20px, 2.6vh, 30px);
+  font-size: 21px; font-weight: 600; letter-spacing: -.012em;
+  color: var(--ink);
+}
+.sheet{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 8.5 / 11;
+  min-height: 420px;
+  background: var(--paper);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: var(--paper-shadow);
+}
+.sheet object{ display: block; width: 100%; height: 100%; border: 0; background: var(--paper); }
+.nofit{
+  height: 100%;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 20px; padding: clamp(28px, 6%, 56px);
+  color: #1d1d1f;
+}
+.nofit .chev{ color: #0053ac; }
+
+/* ══════════════════════════════════════════════════════════════════
+   Footer — on the same spine as everything else
+   ══════════════════════════════════════════════════════════════════ */
+footer{
+  background: var(--band);
+  padding: 0 var(--gx) clamp(40px, 6vh, 64px);
+}
+.foot-in{
+  border-top: 1px solid var(--hair);
+  padding-top: 20px;
+  font-size: 13px; letter-spacing: -.004em; color: var(--ink-3);
+}
+.foot-in p{ margin: 0; }
+
+/* ══════════════════════════════════════════════════════════════════
+   Responsive
+   ══════════════════════════════════════════════════════════════════
+   Below 1080px the landscape scene can only survive as a centre crop, which
+   throws away the dark shoulder — the picture's value anchor — and magnifies
+   the dome into the type. So the narrow frame gets its own portrait-composed
+   scene instead: same light, same palette, recomposed for a tall window. */
+@media (max-width: 1080px){
+  .scene-l{ display: none; }
+  .scene-p{ display: block; }
+  .hero{ min-height: clamp(700px, 116vw, 880px); }
+  .affil{ max-width: 30em; }
+}
+@media (max-width: 620px){
+  .hero{
+    min-height: min(780px, 92vh);
+    padding-top: calc(48px + 46px);
+    padding-bottom: 36px;
   }
-  footer { margin-top: 1.5rem; color: #888; font-size: 0.85rem; text-align: center; }
+  h1{ font-size: 2.375rem; }
+  .affil{ font-size: 1.125rem; max-width: 22em; }
+  .acts{ margin-top: 26px; gap: 17px; }
+  .bar nav{ gap: 20px; }
+  .mark{ font-size: 13.5px; }
+  .sheet{ min-height: 380px; }
+}
+
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior: smooth; }
+  .pill{ transition: background-color .24s ease; }
+  .bar nav a, .chev, a{ transition: color .2s ease, opacity .2s ease, border-color .2s ease; }
+}
+
+@media print{
+  .bar, .scene, .grain, .skip{ display: none; }
+  .hero{ min-height: 0; margin-top: 0; padding: 0 0 24px; background: none; }
+  .cv, footer{ background: none; padding: 0; }
+  .sheet{ box-shadow: none; border: 1px solid #d2d2d7; }
+}
 </style>
 </head>
 <body>
-<header>
-  <h1>Nicholas J. Hallman</h1>
-  <div class="subtitle">Associate Professor of Accounting · UT Austin McCombs School of Business</div>
+
+<a class="skip" href="#cv">CV</a>
+
+<header class="bar">
+  <div class="bar-in hold">
+    <span class="mark">Nicholas J. Hallman</span>
+    <nav aria-label="Sections">
+      <a href="#cv">CV</a>
+      <a href="https://github.com/njhallman/hallman-cv" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
 </header>
-<div class="actions">
-  <a href="hallman-cv.pdf" download>Download CV (PDF)</a>
-  <a href="hallman-cv.pdf" class="secondary" target="_blank">Open in new tab</a>
-  <a href="https://github.com/njhallman/hallman-cv" class="secondary" target="_blank">View on GitHub</a>
-</div>
-<embed src="hallman-cv.pdf" type="application/pdf" class="pdf-frame">
-<footer>Last updated May 2026</footer>
+
+<!-- shared material: filters and the gradients whose geometry is relative
+     to whatever they are painted on -->
+<svg class="defs" aria-hidden="true" focusable="false"
+     style="position:absolute;width:0;height:0;overflow:hidden" width="0" height="0">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="var(--sky-1)"/>
+      <stop offset=".34"  stop-color="var(--sky-2)"/>
+      <stop offset=".62"  stop-color="var(--sky-3)"/>
+      <stop offset=".84"  stop-color="var(--sky-4)"/>
+      <stop offset="1"    stop-color="var(--sky-4)"/>
+    </linearGradient>
+
+    <!-- warm light distributed along the whole horizon, not pooled in one spot -->
+    <linearGradient id="warmBand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="var(--warm)" stop-opacity="0"/>
+      <stop offset=".48" stop-color="var(--warm)" stop-opacity="1"/>
+      <stop offset="1"   stop-color="var(--warm)" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- every mass gets a lit flank and a shaded flank -->
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="var(--r1a)"/><stop offset=".46" stop-color="var(--r1c)"/>
+      <stop offset=".78" stop-color="var(--r1b)"/><stop offset="1" stop-color="var(--r1d)"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="var(--r2a)"/><stop offset=".42" stop-color="var(--r2c)"/>
+      <stop offset=".76" stop-color="var(--r2b)"/><stop offset="1" stop-color="var(--r2d)"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="var(--r3a)"/><stop offset=".44" stop-color="var(--r3c)"/>
+      <stop offset=".8" stop-color="var(--r3b)"/><stop offset="1" stop-color="var(--r3d)"/>
+    </linearGradient>
+    <linearGradient id="gnear" x1="1" y1="0" x2=".1" y2=".9">
+      <stop offset="0" stop-color="var(--n1)"/><stop offset="1" stop-color="var(--n2)"/>
+    </linearGradient>
+
+    <linearGradient id="domeAir" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="var(--haze)" stop-opacity="0"/>
+      <stop offset=".55" stop-color="var(--haze)" stop-opacity="var(--air-mid)"/>
+      <stop offset="1"   stop-color="var(--haze)" stop-opacity="var(--air-end)"/>
+    </linearGradient>
+    <linearGradient id="faceEdge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgb(var(--shade))" stop-opacity=".30"/>
+      <stop offset="1" stop-color="rgb(var(--shade))" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="breakShade" x1="0" y1="0" x2=".18" y2="1">
+      <stop offset="0" stop-color="rgb(var(--shade))" stop-opacity=".26"/>
+      <stop offset="1" stop-color="rgb(var(--shade))" stop-opacity="0"/>
+    </linearGradient>
+    <!-- each flute fades in and out over its own length: no shared blunt bottom -->
+    <linearGradient id="flute" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="rgb(var(--shade))" stop-opacity="0"/>
+      <stop offset=".22" stop-color="rgb(var(--shade))" stop-opacity="1"/>
+      <stop offset=".66" stop-color="rgb(var(--shade))" stop-opacity=".55"/>
+      <stop offset="1"   stop-color="rgb(var(--shade))" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="hz" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="var(--haze)" stop-opacity="0"/>
+      <stop offset=".46" stop-color="var(--haze)" stop-opacity="1"/>
+      <stop offset="1"   stop-color="var(--haze)" stop-opacity="0"/>
+    </linearGradient>
+    <!-- the valley air becomes the page: no hard cut at the bottom edge -->
+    <linearGradient id="dissolve" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="var(--floor)" stop-opacity="0"/>
+      <stop offset=".44" stop-color="var(--floor)" stop-opacity=".30"/>
+      <stop offset=".82" stop-color="var(--floor)" stop-opacity=".86"/>
+      <stop offset="1"   stop-color="var(--floor)" stop-opacity="1"/>
+    </linearGradient>
+
+    <filter id="s16" x="-20%" y="-140%" width="140%" height="380%"><feGaussianBlur stdDeviation="16"/></filter>
+    <filter id="s26" x="-20%" y="-140%" width="140%" height="380%"><feGaussianBlur stdDeviation="26"/></filter>
+    <filter id="s8"  x="-20%" y="-140%" width="140%" height="380%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="s2"  x="-14%" y="-90%"  width="128%" height="280%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+</svg>
+
+<main>
+  <section class="hero">
+
+    <!-- ══ wide frame ═══════════════════════════════════════════════ -->
+    <svg class="scene scene-l" viewBox="0 0 1600 820" preserveAspectRatio="xMidYMax slice"
+         aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="sun" cx="1268" cy="524" r="430" gradientUnits="userSpaceOnUse"
+                        gradientTransform="translate(0 262) scale(1 .5)">
+          <stop offset="0"   stop-color="var(--sun)" stop-opacity=".95"/>
+          <stop offset=".42" stop-color="var(--sun)" stop-opacity=".38"/>
+          <stop offset="1"   stop-color="var(--sun)" stop-opacity="0"/>
+        </radialGradient>
+        <!-- the dome ramp, lit from up-valley: shaded NW face on the left,
+             the break-over catching the light on the right -->
+        <linearGradient id="gdome" x1="842" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0"   stop-color="var(--d1)"/>
+          <stop offset=".32" stop-color="var(--d1)"/>
+          <stop offset=".41" stop-color="var(--d2)"/>
+          <stop offset=".72" stop-color="var(--d3)"/>
+          <stop offset="1"   stop-color="var(--d4)"/>
+        </linearGradient>
+        <!-- the rim light is light catching granite on the sunlit crest, not an
+             outline traced round a 3D object: it exists and then it stops -->
+        <linearGradient id="rimFade" x1="1062" y1="0" x2="1284" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0"   stop-color="var(--rim)" stop-opacity="0"/>
+          <stop offset=".10" stop-color="var(--rim)" stop-opacity="1"/>
+          <stop offset=".48" stop-color="var(--rim)" stop-opacity=".52"/>
+          <stop offset="1"   stop-color="var(--rim)" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="domeClip"><path d="M700,820 C744,810 790,786 816,746 L842,700 L856,418
+          Q857,401 876,396 C928,384 1000,382 1062,391
+          C1104,398 1140,410 1170,428
+          C1214,455 1250,494 1284,540 C1318,586 1356,624 1400,652
+          C1452,684 1512,702 1560,710
+          L1600,714 L1600,820 Z"/></clipPath>
+      </defs>
+
+      <!-- sky -->
+      <rect x="-4" y="-4" width="1608" height="828" fill="url(#sky)"/>
+      <g fill="#ffffff" filter="url(#s16)" opacity="var(--cirrus-o)">
+        <ellipse cx="380"  cy="236" rx="290" ry="7"  opacity=".5"/>
+        <ellipse cx="742"  cy="188" rx="170" ry="5"  opacity=".38"/>
+        <ellipse cx="1188" cy="272" rx="252" ry="6.5" opacity=".44"/>
+        <ellipse cx="1010" cy="148" rx="134" ry="4.5" opacity=".3"/>
+      </g>
+
+      <!-- dusk stars (light scheme: opacity 0) -->
+      <g fill="#ffffff" opacity="var(--star-o)">
+        <circle cx="26" cy="249" r="0.67" opacity="0.055"/><circle cx="150" cy="275" r="0.77" opacity="0.138"/><circle cx="104" cy="70" r="0.76" opacity="0.198"/><circle cx="144" cy="346" r="0.75" opacity="0.105"/>
+        <circle cx="170" cy="212" r="0.98" opacity="0.083"/><circle cx="198" cy="54" r="1.25" opacity="0.143"/><circle cx="245" cy="109" r="0.83" opacity="0.176"/><circle cx="258" cy="152" r="0.94" opacity="0.094"/>
+        <circle cx="383" cy="28" r="1.07" opacity="0.099"/><circle cx="362" cy="168" r="1.35" opacity="0.083"/><circle cx="470" cy="221" r="0.74" opacity="0.121"/><circle cx="446" cy="221" r="0.84" opacity="0.187"/>
+        <circle cx="504" cy="255" r="0.69" opacity="0.198"/><circle cx="597" cy="28" r="1.27" opacity="0.204"/><circle cx="617" cy="327" r="0.82" opacity="0.204"/><circle cx="706" cy="297" r="0.66" opacity="0.149"/>
+        <circle cx="708" cy="109" r="1.05" opacity="0.077"/><circle cx="725" cy="29" r="1.19" opacity="0.110"/><circle cx="745" cy="57" r="0.92" opacity="0.088"/><circle cx="728" cy="32" r="1.11" opacity="0.077"/>
+        <circle cx="843" cy="204" r="0.63" opacity="0.187"/><circle cx="940" cy="184" r="0.96" opacity="0.094"/><circle cx="914" cy="26" r="0.79" opacity="0.193"/><circle cx="1000" cy="24" r="0.78" opacity="0.088"/>
+        <circle cx="1074" cy="99" r="1.27" opacity="0.105"/><circle cx="1195" cy="182" r="1.09" opacity="0.176"/><circle cx="1240" cy="44" r="1.26" opacity="0.198"/><circle cx="1308" cy="228" r="1.08" opacity="0.182"/>
+        <circle cx="1379" cy="344" r="0.85" opacity="0.116"/><circle cx="1400" cy="294" r="1.07" opacity="0.083"/><circle cx="1392" cy="216" r="0.8" opacity="0.187"/><circle cx="1494" cy="165" r="0.9" opacity="0.116"/>
+        <circle cx="1539" cy="65" r="0.79" opacity="0.116"/>
+      </g>
+
+      <!-- horizon warmth runs the full width; one soft sun up-valley.
+           The radial is painted onto the full sky, never into a rect that
+           slices the ellipse while its alpha is still live. -->
+      <rect x="-60" y="466" width="1720" height="300" fill="url(#warmBand)" opacity="var(--warm-o)" filter="url(#s26)"/>
+      <rect x="-60" y="-60" width="1720" height="940" fill="url(#sun)" opacity="var(--sun-o)"/>
+
+      <!-- 1 · far Sierra crest: least contrast, least incident, but not
+              featureless — one scarp and two notches carry the eye. -->
+      <path fill="url(#g1)" opacity=".92" filter="url(#s2)" d="
+        M-60,638 L-48,638 L-42,638 L-36,638 L-32,638 L-29,637 L-21,637 L-15,637 L-12,637 L-10,637
+          L-7,636 L-4,636 L1,636 L5,636 L13,636 L24,636 L31,635 L33,635 L35,635 L41,635 L45,635 L47,635
+          L48,635 L50,635 L54,634 L60,634 L63,634 L67,633 L70,633 L75,633 L78,633 L81,633 L83,633
+          L86,633 L91,633 L95,633 L98,632 L103,632 L106,632 L111,632 L116,631 L125,631 L130,631 L140,630
+          L145,630 L151,630 L155,630 L159,630 L161,630 L179,629 L188,629 L197,629 L203,629 L220,627
+          L232,627 L246,626 L272,623 L277,623 L282,622 L294,622 L302,621 L310,620 L318,620 L329,619
+          L338,618 L342,618 L348,618 L350,618 L354,618 L358,618 L363,617 L370,616 L378,615 L382,613
+          L384,613 L386,612 L390,610 L392,609 L394,609 L395,608 L396,607 L398,606 L401,604 L402,604
+          L402,604 L406,604 L413,605 L416,605 L424,606 L427,606 L429,606 L435,607 L448,609 L460,611
+          L470,613 L479,614 L484,615 L489,616 L497,617 L501,618 L505,618 L514,620 L517,620 L519,621
+          L523,622 L526,622 L529,623 L531,623 L536,624 L540,625 L545,626 L552,627 L557,628 L562,628
+          L567,629 L576,630 L580,630 L589,631 L590,631 L593,631 L596,631 L597,631 L602,631 L604,631
+          L607,630 L611,630 L613,630 L616,630 L618,630 L619,630 L621,630 L624,629 L628,629 L634,629
+          L639,628 L644,628 L648,628 L650,627 L654,627 L663,626 L675,624 L681,626 L682,627 L689,628
+          L690,628 L690,628 L697,625 L698,624 L705,620 L722,617 L726,617 L733,615 L750,613 L758,612
+          L761,612 L764,611 L766,611 L767,611 L774,610 L779,609 L784,609 L787,608 L796,608 L801,607
+          L804,607 L806,606 L812,606 L818,606 L825,606 L831,606 L835,606 L844,606 L847,606 L852,607
+          L860,607 L872,608 L885,609 L900,611 L904,611 L907,612 L915,613 L920,613 L934,615 L947,617
+          L953,617 L958,618 L961,618 L962,618 L964,618 L967,618 L969,618 L973,619 L976,619 L979,619
+          L981,619 L983,619 L989,619 L992,621 L996,622 L999,623 L1002,624 L1002,624 L1002,624 L1003,624
+          L1007,623 L1012,620 L1018,619 L1022,619 L1026,619 L1031,619 L1037,619 L1046,618 L1052,618
+          L1056,618 L1061,617 L1069,617 L1075,617 L1078,617 L1080,617 L1091,616 L1103,615 L1111,615
+          L1126,614 L1131,613 L1141,613 L1149,612 L1156,611 L1167,610 L1172,610 L1179,609 L1187,608
+          L1195,606 L1201,604 L1209,600 L1210,600 L1216,597 L1216,596 L1220,596 L1237,597 L1240,597
+          L1246,597 L1256,597 L1276,597 L1286,596 L1290,597 L1297,597 L1306,597 L1321,597 L1326,597
+          L1331,597 L1337,597 L1347,597 L1359,598 L1368,598 L1377,598 L1386,598 L1418,598 L1442,599
+          L1458,599 L1471,599 L1495,600 L1515,601 L1535,602 L1557,603 L1566,603 L1573,604 L1587,604
+          L1600,604 L1607,604 L1613,605 L1617,605 L1624,605 L1639,606 L1649,606 L1655,606 L1660,606
+          L1660,820 L-60,820 Z"/>
+      <rect x="-60" y="572" width="1720" height="86" fill="url(#hz)" opacity=".52" filter="url(#s16)"/>
+
+      <!-- 2 · Half Dome at the head of the valley: a dead-straight sheer NW
+              face leaning 2° into the mass, a summit shoulder at the top of
+              that face, then one continuous convex cap falling away south-east,
+              broken once by a ledge. It carries its own talus and closes to the
+              frame's base, so no edge of it can ever be exposed as a cut. -->
+      <path fill="url(#gdome)" d="M700,820 C744,810 790,786 816,746 L842,700 L856,418
+        Q857,401 876,396 C928,384 1000,382 1062,391
+        C1104,398 1140,410 1170,428
+        C1214,455 1250,494 1284,540 C1318,586 1356,624 1400,652
+        C1452,684 1512,702 1560,710
+        L1600,714 L1600,820 Z"/>
+      <g clip-path="url(#domeClip)">
+        <rect x="690" y="380" width="920" height="350" fill="url(#domeAir)"/>
+        <!-- the face turns away at its left edge -->
+        <rect x="840" y="396" width="30" height="308" fill="url(#faceEdge)" filter="url(#s8)" opacity=".24"/>
+        <!-- granite flutes: clustered, unequal, each fading at its own height -->
+        <g filter="url(#s2)" opacity=".055">
+          <rect x="890" y="420" width="8"  height="240" fill="url(#flute)"/>
+          <rect x="910" y="430" width="3"  height="185" fill="url(#flute)"/>
+          <rect x="960" y="418" width="10" height="155" fill="url(#flute)"/>
+        </g>
+        <!-- the plane just under the break-over does not catch the light -->
+        <rect x="1120" y="430" width="340" height="150" fill="url(#breakShade)" filter="url(#s8)" opacity=".38"/>
+      </g>
+      <!-- warm light catches only the sunward shoulder, never the whole crest:
+           a rim traced all the way round would read as a hollow lid, not granite -->
+      <path fill="none" stroke="url(#rimFade)" stroke-width="1.4" stroke-linecap="round"
+            opacity="var(--rim-o)" filter="url(#s2)"
+            d="M1062,392 C1104,398 1140,410 1170,428
+               C1214,455 1250,494 1284,540"/>
+
+      <!-- 3 · the high country, crossing in front of the dome's ramp on the
+              right: a notch at a saddle, a stepped shoulder, two spurs whose
+              sunward walls climb far faster than their lee slopes fall. -->
+      <path fill="url(#g2)" d="
+        M-60,652 L-58,652 L-56,652 L-53,652 L-50,652 L-47,652 L-44,652 L-42,652 L-41,651 L-38,651
+          L-36,651 L-34,651 L-32,651 L-30,652 L-26,652 L-22,651 L-16,651 L-13,651 L-9,650 L-1,649 L5,649
+          L6,648 L9,648 L12,648 L16,647 L18,647 L21,646 L24,645 L29,644 L30,644 L32,643 L33,643 L34,643
+          L35,643 L37,643 L39,642 L42,642 L44,641 L46,641 L48,640 L49,639 L52,639 L55,638 L62,637
+          L66,636 L73,635 L77,634 L81,633 L83,632 L91,632 L96,631 L106,629 L116,628 L124,627 L129,627
+          L138,626 L146,625 L150,624 L153,624 L156,623 L157,623 L161,622 L166,620 L173,618 L180,617
+          L183,616 L184,616 L187,615 L189,614 L194,613 L197,613 L201,612 L206,611 L209,610 L212,610
+          L221,608 L225,606 L229,605 L231,604 L238,599 L245,593 L245,593 L249,590 L252,587 L252,586
+          L255,587 L257,587 L261,589 L263,589 L264,589 L267,590 L268,591 L270,592 L271,592 L274,594
+          L275,595 L276,595 L278,596 L280,597 L281,597 L282,598 L284,598 L287,599 L294,603 L298,605
+          L302,607 L308,611 L312,613 L320,618 L323,619 L328,622 L332,625 L337,628 L340,629 L345,632
+          L348,633 L351,635 L353,636 L358,638 L360,639 L362,640 L371,645 L376,647 L383,650 L387,651
+          L393,653 L401,655 L408,656 L415,657 L422,658 L431,659 L451,660 L464,659 L468,658 L474,658
+          L480,658 L491,657 L498,656 L501,655 L505,654 L511,653 L523,651 L532,654 L535,655 L542,657
+          L545,657 L545,657 L545,657 L548,656 L554,653 L555,652 L563,648 L566,646 L572,645 L581,644
+          L592,644 L606,643 L617,642 L627,642 L632,641 L639,641 L646,641 L651,641 L658,641 L665,641
+          L672,640 L676,640 L685,641 L693,641 L705,642 L709,642 L711,643 L716,643 L726,644 L735,644
+          L742,645 L749,646 L753,647 L756,647 L759,647 L760,646 L761,646 L764,646 L766,646 L772,646
+          L776,647 L785,648 L789,649 L796,649 L803,650 L813,650 L822,650 L841,650 L855,650 L857,650
+          L860,649 L863,650 L866,650 L869,650 L877,649 L883,649 L884,649 L889,649 L895,649 L905,649
+          L906,649 L911,659 L912,658 L914,657 L924,649 L927,646 L933,645 L941,644 L967,640 L979,638
+          L1000,633 L1015,627 L1042,615 L1056,610 L1065,606 L1078,601 L1090,597 L1101,594 L1117,591
+          L1126,591 L1131,591 L1139,593 L1160,600 L1177,606 L1187,611 L1203,617 L1210,619 L1220,620
+          L1239,620 L1251,615 L1265,606 L1273,600 L1280,595 L1286,591 L1292,589 L1300,586 L1300,586
+          L1300,585 L1303,582 L1307,578 L1335,558 L1350,556 L1361,555 L1376,546 L1379,543 L1382,541
+          L1382,540 L1387,543 L1401,550 L1405,552 L1420,559 L1431,564 L1440,567 L1457,570 L1476,568
+          L1487,565 L1497,563 L1518,556 L1529,553 L1541,549 L1544,549 L1548,548 L1553,547 L1563,546
+          L1569,545 L1574,545 L1580,545 L1586,546 L1600,547 L1608,548 L1617,549 L1622,549 L1636,551
+          L1647,553 L1652,553 L1660,554 L1660,820 L-60,820 Z"/>
+      <rect x="-60" y="628" width="1720" height="92" fill="url(#hz)" opacity=".24" filter="url(#s16)"/>
+
+      <!-- 4 · the near ridge: incident roughly twice as frequent as the ridge
+              behind it, so the two layers read apart by texture as well as value. -->
+      <path fill="url(#g3)" d="
+        M-60,724 L-55,724 L-45,723 L-34,721 L-14,719 L-0,717 L7,717 L11,716 L17,715 L29,714 L37,713
+          L44,711 L55,709 L64,708 L81,706 L94,704 L101,703 L105,702 L112,702 L120,699 L124,698 L134,693
+          L143,688 L151,684 L167,677 L174,674 L177,673 L181,671 L184,670 L188,668 L189,667 L191,666
+          L198,661 L203,656 L208,649 L208,649 L209,649 L217,652 L220,653 L223,655 L225,656 L228,657
+          L235,661 L241,665 L246,669 L249,671 L253,674 L258,678 L262,681 L265,683 L271,686 L277,691
+          L286,697 L291,704 L294,706 L296,710 L299,713 L300,713 L300,714 L300,714 L306,715 L313,715
+          L318,717 L321,719 L325,721 L332,724 L336,725 L345,728 L349,729 L356,730 L365,729 L374,729
+          L386,728 L394,727 L411,724 L419,723 L428,720 L434,719 L438,719 L448,718 L452,718 L453,718
+          L454,722 L458,728 L459,727 L467,717 L470,712 L478,709 L481,709 L486,708 L488,708 L492,707
+          L500,706 L507,704 L512,702 L516,700 L521,698 L531,695 L541,691 L546,689 L556,686 L566,683
+          L574,680 L585,676 L586,675 L597,667 L599,664 L604,658 L604,657 L605,658 L616,662 L622,665
+          L626,667 L650,681 L662,688 L688,704 L707,715 L712,717 L717,720 L723,723 L727,725 L737,728
+          L743,729 L751,730 L757,731 L763,730 L766,731 L774,731 L779,730 L785,730 L789,729 L791,729
+          L794,729 L796,729 L800,728 L804,728 L807,727 L810,727 L817,727 L820,730 L822,730 L828,732
+          L828,732 L828,732 L830,731 L833,728 L846,721 L853,719 L856,719 L862,718 L869,717 L877,716
+          L881,716 L885,715 L890,715 L895,714 L901,712 L907,710 L911,709 L914,707 L918,705 L926,702
+          L935,698 L944,695 L948,694 L953,693 L956,693 L958,691 L963,689 L967,687 L974,682 L980,676
+          L981,675 L986,669 L986,669 L987,669 L990,670 L996,672 L1002,675 L1005,677 L1007,677 L1016,682
+          L1025,687 L1040,696 L1049,702 L1054,705 L1057,706 L1068,714 L1074,717 L1087,724 L1095,726
+          L1100,728 L1110,732 L1118,734 L1130,735 L1145,736 L1156,735 L1173,738 L1180,739 L1180,740
+          L1180,739 L1182,739 L1186,736 L1204,730 L1216,727 L1232,724 L1237,723 L1241,723 L1255,722
+          L1256,722 L1257,722 L1262,731 L1263,730 L1275,716 L1289,713 L1304,709 L1310,707 L1314,705
+          L1324,701 L1329,699 L1333,698 L1336,697 L1340,694 L1343,693 L1351,690 L1357,689 L1363,686
+          L1368,683 L1373,680 L1379,676 L1381,673 L1386,668 L1386,668 L1390,669 L1398,671 L1403,673
+          L1407,674 L1412,676 L1414,677 L1419,679 L1424,681 L1426,682 L1430,684 L1434,686 L1441,690
+          L1443,691 L1446,692 L1451,695 L1457,697 L1461,699 L1463,700 L1467,702 L1469,702 L1472,704
+          L1477,707 L1481,709 L1486,711 L1492,715 L1497,716 L1502,718 L1513,720 L1516,720 L1518,720
+          L1522,720 L1527,721 L1538,721 L1549,721 L1552,721 L1558,720 L1565,719 L1568,717 L1574,716
+          L1579,715 L1584,714 L1587,714 L1593,713 L1597,712 L1600,712 L1602,711 L1604,711 L1608,710
+          L1610,710 L1612,710 L1614,710 L1616,709 L1617,710 L1619,709 L1622,708 L1624,707 L1626,707
+          L1628,707 L1631,707 L1633,706 L1637,706 L1641,706 L1643,706 L1645,705 L1648,705 L1653,705
+          L1656,704 L1660,704 L1660,820 L-60,820 Z"/>
+      <rect x="-60" y="700" width="1720" height="80" fill="url(#hz)" opacity=".18" filter="url(#s16)"/>
+
+      <!-- 5 · the granite shoulder we are standing beside, entering low right:
+              the picture's value anchor and its sharpest edge. -->
+      <path fill="url(#gnear)" d="M1600,580 L1550,604 L1520,622
+        C1490,644 1466,642 1438,662 L1402,692 L1378,704
+        C1350,726 1332,752 1306,772 L1268,800 L1244,820 L1600,820 Z"/>
+      <path fill="none" stroke="var(--rim)" stroke-width="1.6" opacity="calc(var(--rim-o) * .7)" filter="url(#s2)"
+            d="M1600,580 L1550,604 L1520,622 C1490,644 1466,642 1438,662 L1402,692 L1378,704"/>
+
+      <!-- the valley air dissolves into the page: no hard cut at the bottom -->
+      <rect x="-60" y="742" width="1720" height="84" fill="url(#dissolve)"/>
+    </svg>
+
+    <!-- ══ tall frame ═══════════════════════════════════════════════ -->
+    <svg class="scene scene-p" viewBox="0 0 900 1100" preserveAspectRatio="xMidYMax slice"
+         aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="sunP" cx="700" cy="796" r="300" gradientUnits="userSpaceOnUse"
+                        gradientTransform="translate(0 398) scale(1 .5)">
+          <stop offset="0"   stop-color="var(--sun)" stop-opacity=".95"/>
+          <stop offset=".42" stop-color="var(--sun)" stop-opacity=".38"/>
+          <stop offset="1"   stop-color="var(--sun)" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="gdomeP" x1="372" y1="0" x2="654" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0"   stop-color="var(--d1)"/>
+          <stop offset=".32" stop-color="var(--d1)"/>
+          <stop offset=".41" stop-color="var(--d2)"/>
+          <stop offset=".72" stop-color="var(--d3)"/>
+          <stop offset="1"   stop-color="var(--d4)"/>
+        </linearGradient>
+        <linearGradient id="rimFadeP" x1="480" y1="0" x2="654" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0"   stop-color="var(--rim)" stop-opacity="0"/>
+          <stop offset=".10" stop-color="var(--rim)" stop-opacity="1"/>
+          <stop offset=".48" stop-color="var(--rim)" stop-opacity=".52"/>
+          <stop offset="1"   stop-color="var(--rim)" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="domeClipP"><path d="M330,906 C354,900 366,886 370,862 L372,846 L378,712
+          Q378,701 389,698 C414,691 450,690 480,695
+          C502,699 520,706 536,716
+          C558,730 576,750 594,772 C612,794 632,812 654,825
+          C682,841 716,851 748,855
+          C800,860 856,861 892,861 L892,1104 L330,1104 Z"/></clipPath>
+      </defs>
+
+      <rect x="-4" y="-4" width="908" height="1108" fill="url(#sky)"/>
+      <g fill="#ffffff" filter="url(#s16)" opacity="var(--cirrus-o)">
+        <ellipse cx="250" cy="404" rx="230" ry="7"   opacity=".46"/>
+        <ellipse cx="620" cy="330" rx="150" ry="5"   opacity=".34"/>
+        <ellipse cx="700" cy="520" rx="210" ry="6.5" opacity=".40"/>
+        <ellipse cx="380" cy="212" rx="120" ry="4.5" opacity=".28"/>
+      </g>
+      <g fill="#ffffff" opacity="var(--star-o)">
+        <circle cx="52" cy="330" r="0.8" opacity="0.127"/><circle cx="120" cy="140" r="1.1" opacity="0.176"/><circle cx="196" cy="262" r="0.75" opacity="0.099"/>
+        <circle cx="248" cy="72" r="1.2" opacity="0.154"/><circle cx="306" cy="424" r="0.7" opacity="0.138"/><circle cx="362" cy="188" r="0.95" opacity="0.083"/>
+        <circle cx="430" cy="96" r="1.05" opacity="0.176"/><circle cx="470" cy="352" r="0.8" opacity="0.110"/><circle cx="528" cy="240" r="1.25" opacity="0.149"/>
+        <circle cx="584" cy="60" r="0.85" opacity="0.127"/><circle cx="640" cy="418" r="0.9" opacity="0.165"/><circle cx="690" cy="150" r="1.15" opacity="0.105"/>
+        <circle cx="742" cy="300" r="0.75" opacity="0.193"/><circle cx="806" cy="86" r="1.0" opacity="0.088"/><circle cx="856" cy="380" r="0.85" opacity="0.143"/>
+        <circle cx="880" cy="206" r="1.1" opacity="0.116"/><circle cx="160" cy="470" r="0.7" opacity="0.088"/><circle cx="560" cy="472" r="0.75" opacity="0.099"/>
+      </g>
+
+      <rect x="-40" y="700" width="980" height="240" fill="url(#warmBand)" opacity="var(--warm-o)" filter="url(#s26)"/>
+      <rect x="-40" y="-40" width="980" height="1180" fill="url(#sunP)" opacity="var(--sun-o)"/>
+
+      <path fill="url(#g1)" opacity=".92" filter="url(#s2)" d="
+        M-40,782 L-32,782 L-22,782 L-12,782 L1,781 L30,779 L45,778 L65,776 L83,775 L90,774 L93,774
+          L103,773 L117,772 L125,771 L133,770 L143,769 L153,767 L154,766 L158,765 L163,763 L167,761
+          L171,758 L172,757 L177,757 L189,757 L190,757 L203,758 L212,758 L221,758 L226,758 L238,759
+          L261,761 L271,761 L281,762 L291,763 L295,764 L301,765 L302,765 L304,765 L304,765 L306,766
+          L309,766 L311,768 L315,770 L316,770 L317,771 L322,773 L322,773 L322,773 L324,773 L325,773
+          L327,772 L334,770 L338,770 L345,771 L350,771 L358,772 L363,772 L369,773 L381,774 L386,774
+          L395,774 L405,774 L421,773 L426,773 L432,773 L436,772 L438,773 L442,773 L451,772 L454,771
+          L459,771 L485,767 L500,764 L514,762 L524,761 L535,760 L549,759 L555,759 L560,759 L572,759
+          L584,760 L589,760 L599,761 L610,761 L618,762 L624,762 L633,763 L639,764 L647,764 L664,766
+          L674,767 L683,768 L696,768 L705,768 L713,768 L717,768 L721,768 L724,768 L726,767 L728,767
+          L731,766 L737,763 L737,763 L742,760 L742,760 L743,760 L751,760 L758,761 L759,761 L761,761
+          L765,761 L769,761 L774,761 L783,762 L793,762 L799,762 L805,762 L812,762 L819,762 L823,762
+          L828,762 L834,762 L839,762 L845,761 L849,761 L857,761 L860,761 L864,761 L873,761 L878,760
+          L886,760 L898,759 L902,759 L910,758 L920,758 L926,758 L932,758 L934,758 L937,758 L940,758
+          L940,1104 L-40,1104 Z"/>
+      <rect x="-40" y="734" width="980" height="70" fill="url(#hz)" opacity=".52" filter="url(#s16)"/>
+
+      <path fill="url(#gdomeP)" d="M330,906 C354,900 366,886 370,862 L372,846 L378,712
+        Q378,701 389,698 C414,691 450,690 480,695
+        C502,699 520,706 536,716
+        C558,730 576,750 594,772 C612,794 632,812 654,825
+        C682,841 716,851 748,855
+        C800,860 856,861 892,861 L892,1104 L330,1104 Z"/>
+      <g clip-path="url(#domeClipP)">
+        <rect x="330" y="688" width="560" height="190" fill="url(#domeAir)"/>
+        <rect x="370" y="700" width="20" height="150" fill="url(#faceEdge)" filter="url(#s8)" opacity=".24"/>
+        <g filter="url(#s2)" opacity=".055">
+          <rect x="400" y="720" width="6" height="110" fill="url(#flute)"/>
+          <rect x="412" y="726" width="2" height="88"  fill="url(#flute)"/>
+          <rect x="440" y="716" width="7" height="74"  fill="url(#flute)"/>
+        </g>
+        <rect x="540" y="718" width="180" height="86" fill="url(#breakShade)" filter="url(#s8)" opacity=".38"/>
+      </g>
+      <path fill="none" stroke="url(#rimFadeP)" stroke-width="1.7" stroke-linecap="round"
+            opacity="var(--rim-o)" filter="url(#s2)"
+            d="M480,695 C502,699 520,706 536,716
+               C558,730 576,750 594,772"/>
+
+      <path fill="url(#g2)" d="
+        M-40,834 L-36,834 L-33,834 L-31,833 L-29,833 L-27,833 L-22,832 L-15,831 L-9,829 L-2,828 L2,829
+          L12,827 L22,825 L30,824 L35,823 L39,822 L45,820 L49,819 L53,818 L55,818 L59,817 L66,816
+          L79,814 L87,813 L91,812 L93,812 L97,811 L104,810 L108,810 L111,809 L117,808 L119,808 L122,807
+          L129,805 L139,803 L146,802 L157,800 L173,796 L177,794 L191,784 L196,778 L196,777 L198,777
+          L207,779 L216,783 L216,783 L226,787 L234,790 L243,795 L263,805 L267,808 L273,812 L283,817
+          L289,820 L292,821 L295,823 L299,825 L302,826 L308,829 L313,831 L320,833 L326,834 L334,835
+          L347,837 L355,836 L362,835 L372,834 L378,837 L380,837 L388,839 L388,839 L388,839 L390,838
+          L395,835 L403,829 L406,828 L412,828 L418,827 L431,826 L441,825 L446,824 L453,824 L458,825
+          L467,824 L473,824 L483,824 L495,824 L514,826 L525,827 L544,830 L547,830 L566,830 L567,830
+          L572,839 L573,838 L578,836 L585,833 L586,833 L591,833 L605,832 L612,831 L620,830 L625,829
+          L640,825 L648,822 L655,820 L658,820 L664,818 L667,818 L675,815 L678,815 L685,813 L688,812
+          L703,808 L708,806 L721,796 L722,795 L726,790 L726,790 L732,791 L737,792 L745,795 L752,797
+          L766,802 L774,806 L783,810 L794,815 L803,818 L810,819 L820,821 L830,822 L836,822 L844,823
+          L848,822 L852,822 L855,822 L858,821 L860,822 L865,822 L872,821 L875,820 L880,819 L884,819
+          L887,818 L892,818 L899,816 L911,814 L921,812 L927,811 L940,810 L940,1104 L-40,1104 Z"/>
+      <rect x="-40" y="804" width="980" height="76" fill="url(#hz)" opacity=".24" filter="url(#s16)"/>
+
+      <path fill="url(#g3)" d="
+        M-40,928 L-28,927 L-22,925 L-15,924 L-11,924 L-8,924 L-5,924 L-3,924 L1,923 L6,922 L12,921
+          L20,920 L27,919 L35,917 L50,914 L71,910 L82,908 L86,907 L95,903 L99,902 L104,899 L115,892
+          L117,890 L119,887 L122,882 L128,873 L128,871 L132,865 L132,864 L133,864 L136,863 L139,862
+          L145,861 L148,861 L160,860 L168,861 L176,863 L183,865 L184,865 L186,866 L187,865 L188,866
+          L189,866 L190,867 L191,868 L194,871 L198,873 L203,876 L206,877 L209,879 L213,882 L215,883
+          L219,885 L221,885 L226,889 L233,895 L239,903 L240,904 L244,909 L246,912 L246,912 L246,912
+          L249,913 L252,913 L254,913 L259,912 L262,914 L266,917 L268,918 L270,918 L272,919 L275,921
+          L279,922 L281,923 L283,924 L289,925 L294,926 L296,926 L302,927 L312,927 L317,926 L334,924
+          L343,921 L356,919 L363,918 L372,918 L373,918 L378,927 L378,926 L379,926 L388,912 L390,909
+          L399,906 L410,904 L421,902 L437,900 L448,896 L466,892 L475,889 L482,887 L496,883 L518,879
+          L531,876 L542,866 L545,860 L546,859 L546,859 L560,864 L563,866 L574,873 L583,880 L603,895
+          L641,919 L663,928 L685,927 L694,930 L698,931 L700,931 L700,931 L700,931 L706,927 L709,924
+          L729,916 L736,914 L743,912 L754,909 L761,907 L767,906 L775,905 L784,904 L797,901 L798,900
+          L802,897 L805,893 L808,890 L809,889 L812,885 L812,885 L816,886 L819,887 L820,888 L824,889
+          L827,890 L829,891 L837,894 L844,897 L856,904 L876,913 L881,916 L889,920 L895,922 L898,925
+          L906,929 L918,933 L923,934 L927,935 L931,935 L933,936 L935,936 L940,936 L940,1104 L-40,1104 Z"/>
+      <rect x="-40" y="886" width="980" height="70" fill="url(#hz)" opacity=".18" filter="url(#s16)"/>
+
+      <!-- the value anchor, kept inside the frame the phone actually shows -->
+      <path fill="url(#gnear)" d="M940,704 L908,726 L884,744
+        C854,766 830,776 802,798 L768,826 L744,846
+        C714,876 694,906 668,934 L632,970 L598,1008 L566,1050 L548,1104 L940,1104 Z"/>
+      <path fill="none" stroke="var(--rim)" stroke-width="1.5" opacity="calc(var(--rim-o) * .7)" filter="url(#s2)"
+            d="M940,704 L908,726 L884,744 C854,766 830,776 802,798 L768,826 L744,846"/>
+
+      <rect x="-40" y="996" width="980" height="112" fill="url(#dissolve)"/>
+    </svg>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="lede hold">
+      <h1>Nicholas J. Hallman</h1>
+      <p class="affil"><span>Associate Professor of Accounting&nbsp;<span class="sep">·</span></span> <span>UT&nbsp;Austin McCombs School of Business</span></p>
+      <div class="acts">
+        <a class="pill" href="hallman-cv.pdf" download>Download CV (PDF)</a>
+        <div class="quiet">
+          <a class="chev" href="hallman-cv.pdf" target="_blank" rel="noopener"><span class="u">Open in new tab</span><svg viewBox="0 0 7 11" aria-hidden="true" focusable="false"><path d="M1 1l4.5 4.5L1 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="chev" href="https://github.com/njhallman/hallman-cv" target="_blank" rel="noopener"><span class="u">View on GitHub</span><svg viewBox="0 0 7 11" aria-hidden="true" focusable="false"><path d="M1 1l4.5 4.5L1 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cv" id="cv" aria-labelledby="cv-h">
+    <div class="hold">
+      <h2 id="cv-h">CV</h2>
+      <div class="sheet">
+        <object data="hallman-cv.pdf" type="application/pdf" title="Nicholas J. Hallman — CV">
+          <div class="nofit">
+            <a class="pill" href="hallman-cv.pdf" download>Download CV (PDF)</a>
+            <a class="chev" href="hallman-cv.pdf" target="_blank" rel="noopener"><span class="u">Open in new tab</span><svg viewBox="0 0 7 11" aria-hidden="true" focusable="false"><path d="M1 1l4.5 4.5L1 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </object>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in hold">
+    <p>Last updated July 2026</p>
+  </div>
+</footer>
+
 </body>
 </html>
